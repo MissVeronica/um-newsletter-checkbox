@@ -3,7 +3,7 @@ Extension to Ultimate Member for adding a checkbox for the Newsletter plugin sub
 ## UM Settings
 None
 ## UM Additions
-1. A predefined Newsletter plugin checkbox field for the UM Forms Builder.
+1. A predefined Newsletter plugin checkbox field for the UM Forms Builder (Registration Form).
 2. The Newsletter plugin checkbox field to be editable in the UM Account's Page General Tab.
 3. Sortable Column extension with the Newsletter plugin checkbox field status for the WP All Users page.
 ## Reference
