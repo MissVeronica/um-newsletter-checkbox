@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Newsletter
  * Description:     Extension to Ultimate Member for adding a checkbox for the Newsletter plugin subscription selection and editable at the User Account Page.
- * Version:         1.0.0 development
+ * Version:         1.1.0
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v3 or later
@@ -46,7 +46,7 @@ class UM_Newsletter_Predefined_Field {
 
     public function um_registration_set_extra_data_newsletter( $user_id, $args ) {
 
-        if ( $args['mode'] == 'register' ) {
+        if ( isset( $args['mode'] ) && $args['mode'] == 'register' ) {
             if ( ! isset( $args[$this->meta_key] )) {
                 update_user_meta( $user_id, $this->meta_key, $this->reject );
             }
