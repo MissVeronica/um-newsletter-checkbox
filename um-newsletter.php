@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Newsletter
  * Description:     Extension to Ultimate Member for adding a checkbox for the Newsletter plugin subscription selection and editable at the User Account Page.
- * Version:         1.1.0
+ * Version:         1.2.0 
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v3 or later
@@ -10,7 +10,7 @@
  * Author URI:      https://github.com/MissVeronica
  * Text Domain:     ultimate-member
  * Domain Path:     /languages
- * UM version:      2.5.0
+ * UM version:      2.8.6
  */
 if ( ! defined( 'ABSPATH' ) ) exit; 
 if ( ! class_exists( 'UM' ) ) return;
@@ -34,7 +34,7 @@ class UM_Newsletter_Predefined_Field {
         add_filter( 'um_account_pre_updating_profile_array', array( $this, 'um_account_pre_updating_profile_newsletter' ), 10, 1 );
         add_filter( 'manage_users_sortable_columns',         array( $this, 'um_register_sortable_columns_newsletter' ), 10, 1 );
         add_action( 'pre_get_users',                         array( $this, 'um_pre_get_users_sort_columns_newsletter' ), 10, 1 );
-        add_filter( 'um_registration_set_extra_data',        array( $this, 'um_registration_set_extra_data_newsletter' ), 10, 2 );
+        add_filter( 'um_registration_set_extra_data',        array( $this, 'um_registration_set_extra_data_newsletter' ), 10, 3 );
 
         $this->title         = __( 'Newsletter', 'ultimate-member' );
         $this->label         = __( 'Newsletter', 'ultimate-member' );
@@ -44,9 +44,9 @@ class UM_Newsletter_Predefined_Field {
         $this->unknown       = __( 'Unknown', 'ultimate-member' );
     }
 
-    public function um_registration_set_extra_data_newsletter( $user_id, $args ) {
+    public function um_registration_set_extra_data_newsletter( $user_id, $args, $form_data ) {
 
-        if ( isset( $args['mode'] ) && $args['mode'] == 'register' ) {
+        if ( isset( $form_data['mode'] ) && $form_data['mode'] == 'register' ) {
             if ( ! isset( $args[$this->meta_key] )) {
                 update_user_meta( $user_id, $this->meta_key, $this->reject );
             }
