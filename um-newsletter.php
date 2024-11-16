@@ -2,7 +2,7 @@
 /**
  * Plugin Name:     Ultimate Member - Newsletter
  * Description:     Extension to Ultimate Member for adding a checkbox for the Newsletter plugin subscription selection and editable at the User Account Page.
- * Version:         1.2.0 
+ * Version:         1.2.1 
  * Requires PHP:    7.4
  * Author:          Miss Veronica
  * License:         GPL v3 or later
@@ -10,7 +10,7 @@
  * Author URI:      https://github.com/MissVeronica
  * Text Domain:     ultimate-member
  * Domain Path:     /languages
- * UM version:      2.8.6
+ * UM version:      2.9.1
  */
 if ( ! defined( 'ABSPATH' ) ) exit; 
 if ( ! class_exists( 'UM' ) ) return;
@@ -18,12 +18,6 @@ if ( ! class_exists( 'UM' ) ) return;
 class UM_Newsletter_Predefined_Field {
 
     public $meta_key = 'newsletter';
-    public $title;
-    public $label;
-    public $column_header;
-    public $options;
-    public $reject;
-    public $unknown;
 
     function __construct( ) {
 
@@ -35,20 +29,13 @@ class UM_Newsletter_Predefined_Field {
         add_filter( 'manage_users_sortable_columns',         array( $this, 'um_register_sortable_columns_newsletter' ), 10, 1 );
         add_action( 'pre_get_users',                         array( $this, 'um_pre_get_users_sort_columns_newsletter' ), 10, 1 );
         add_filter( 'um_registration_set_extra_data',        array( $this, 'um_registration_set_extra_data_newsletter' ), 10, 3 );
-
-        $this->title         = __( 'Newsletter', 'ultimate-member' );
-        $this->label         = __( 'Newsletter', 'ultimate-member' );
-        $this->column_header = __( 'Newsletter', 'ultimate-member' );
-        $this->options       = array( __( 'Yes', 'ultimate-member' ));
-        $this->reject        = array( __( 'No', 'ultimate-member' ));
-        $this->unknown       = __( 'Unknown', 'ultimate-member' );
     }
 
     public function um_registration_set_extra_data_newsletter( $user_id, $args, $form_data ) {
 
         if ( isset( $form_data['mode'] ) && $form_data['mode'] == 'register' ) {
             if ( ! isset( $args[$this->meta_key] )) {
-                update_user_meta( $user_id, $this->meta_key, $this->reject );
+                update_user_meta( $user_id, $this->meta_key, array( esc_html__( 'No', 'ultimate-member' )) );
             }
         }
 
@@ -72,7 +59,7 @@ class UM_Newsletter_Predefined_Field {
 
     public function um_manage_users_columns_newsletter( $columns ) {
 
-        $columns['um_column_newsletter'] = $this->column_header;
+        $columns['um_column_newsletter'] = esc_html__( 'Newsletter', 'ultimate-member' );
 
         return $columns;
     }
@@ -88,7 +75,7 @@ class UM_Newsletter_Predefined_Field {
             if ( is_array( $value ) && isset( $value[0] )) {
                 $value = $value[0];
             } else {
-                $value = $this->unknown;
+                $value = esc_html__( 'Unknown', 'ultimate-member' );
             }
         }
 
@@ -99,14 +86,14 @@ class UM_Newsletter_Predefined_Field {
 
         $predefined_fields[$this->meta_key] = array(
             
-                        'title'    => $this->title,
+                        'title'    => esc_html__( 'Newsletter', 'ultimate-member' ),
                         'metakey'  => $this->meta_key,
                         'type'     => 'checkbox',
-                        'label'    => $this->label,
+                        'label'    => esc_html__( 'Newsletter', 'ultimate-member' ),
                         'required' => 0,
                         'public'   => 1,
                         'editable' => 1,
-                        'options'  => $this->options,
+                        'options'  => array( esc_html__( 'Yes', 'ultimate-member' ), esc_html__( 'No', 'ultimate-member' )),
         );
 
         return $predefined_fields;
@@ -123,7 +110,7 @@ class UM_Newsletter_Predefined_Field {
     public function um_account_pre_updating_profile_newsletter( $changes ) {
 
         if ( ! isset( $changes[$this->meta_key] )) {
-            $changes[$this->meta_key] = $this->reject;
+            $changes[$this->meta_key] = array( esc_html__( 'No', 'ultimate-member' ));
         }
 
         return $changes;
